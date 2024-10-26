@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, } from 'react'
 import Heart from '../assets/Heart.svg'
 import Exchange from '../assets/Exchange.svg'
 import CaretDown from '../assets/CaretDown.svg'
 
 // km=kilometros mi=millas ft=pies in= pulgada cm=centimetros yardas=yr milimetros=mm
-//declarar el valor de las medidas
 
 const conversions = {
     'km-miles': value => (value * 0.621371).toFixed(2),
@@ -22,8 +21,6 @@ const Converter = ({ addConversion }) => {
     const [result, setResult] = useState('')
     const [conversionType, setConversionType] = useState('km-miles')
 
-    // const selectRef = useRef(null)
-
     useEffect(() => {
         if (inputValue === '') {
             setResult('')
@@ -39,11 +36,6 @@ const Converter = ({ addConversion }) => {
         setInputValue(result)
         setResult(conversions[newConversionType](parseFloat(result)))
     }
-
-    const handleCaretClick = () => {
-        selectRef.current.focus()
-    }
-
     return (
         <div className='div-converter'>
             <h2>convert</h2>
@@ -56,7 +48,7 @@ const Converter = ({ addConversion }) => {
                             </option>
                         ))}
                     </select>
-                    <button className="caret-button" onClick={handleCaretClick}>
+                    <button className="caret-button">
                         <img src={CaretDown} alt="seleccionar unidad de medida" />
                     </button>
                     <button className="exchange-button" onClick={handleSwap}>
@@ -71,7 +63,10 @@ const Converter = ({ addConversion }) => {
             </div>
 
             <div className="heart-result-container">
-                <button onClick={() => addConversion(conversionType, inputValue, result)} className="converter-heart">
+                <button onClick={() => {
+                    // console.log("Guardando conversión:", { conversionType, inputValue, result })
+                    addConversion(conversionType, inputValue, result);
+                }} className="converter-heart">
                     <img src={Heart} alt="Guardar" style={{ width: "24px", height: "24px" }} />
                 </button>
                 <div className="result-container">

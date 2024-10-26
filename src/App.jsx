@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import Header from './components/Header.jsx'
 import Converter from './components/Converter.jsx'
@@ -7,14 +7,32 @@ import Footer from './components/Footer.jsx'
 
 function App() {
   const [conversions, setConversions] = useState([])
-
+  useEffect(() => {
+    const storedConversions = JSON.parse(localStorage.getItem('conversions'))
+    // console.log("Cargando desde localStorage:", storedConversions)
+    if (storedConversions && Array.isArray(storedConversions)) {
+      setConversions(storedConversions)
+    }
+  }, [])
 
   const addConversion = (conversionType, inputValue, result) => {
-    setConversions([...conversions, { conversionType, inputValue, result }])
+    const newConversion = { conversionType, inputValue, result }
+
+    if (newConversion && newConversion.conversionType && newConversion.inputValue && newConversion.result) {
+      setConversions((prevConversions) => {
+        const updatedConversions = [...prevConversions, newConversion]
+        localStorage.setItem('conversions', JSON.stringify(updatedConversions))
+        return updatedConversions
+      })
+    } else {
+      console.error("Error: newConversion tiene propiedades faltantes.", newConversion)
+    }
   }
 
   const removeConversion = (index) => {
-    setConversions(conversions.filter((_, i) => i !== index))
+    const updatedConversions = conversions.filter((_, i) => i !== index)
+    setConversions(updatedConversions)
+    localStorage.setItem('conversions', JSON.stringify(updatedConversions))
   }
 
   return (
@@ -37,7 +55,7 @@ function App() {
 
       </div>
       <div className="footer-container">
-        <Footer></Footer>
+        <Footer />
       </div>
     </div>
   )

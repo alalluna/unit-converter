@@ -6,7 +6,7 @@ const List = ({ conversions, removeConversion }) => {
             <h3>Saved</h3>
             <ul>
                 {conversions.map((conversion, index) => {
-                    const [fromUnit, toUnit] = conversion.conversionType.split('-');
+                    const [fromUnit, toUnit] = conversion.conversionType.split('-')
                     return (
                         <div className="elementSaved" key={index}>
                             <li>
